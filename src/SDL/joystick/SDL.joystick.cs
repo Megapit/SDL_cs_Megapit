@@ -50,15 +50,38 @@ public static unsafe partial class SDL
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial SDL_JoystickId* GetJoysticks(out int count);
 
-	/// <summary>
-	/// Get the implementation dependent name of a joystick.
-	/// </summary>
-	/// <remarks>
-	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_GetJoystickNameForID">documentation</see> for more details.
-	/// </remarks>
-	/// <param name="instanceId">The joystick instance ID.</param>
-	/// <returns>The name of the selected joystick. If no name can be found, this function returns <see langword="null"/>; call <see cref="GetError"/> for more information.</returns>
-	[LibraryImport(LibraryName, EntryPoint = "SDL_GetJoystickNameForID", StringMarshallingCustomType = typeof(SDL_StringMarshaller))]
+    /// <summary>
+    /// Get a list of currently connected joysticks.
+    /// </summary>
+    /// <remarks>
+    /// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_GetJoysticks">documentation</see> for more details.
+    /// </remarks>
+    /// <param name="count">A pointer filled in with the number of joysticks returned.</param>
+    /// <returns>An array of joystick instance IDs or <see langword="null"/> on failure; <see cref="GetError"/> for more details.</returns>
+    public static SDL_JoystickId[]? GetJoystick(out int count)
+    {
+        SDL_JoystickId[]? joysticks = null;
+        SDL_JoystickId* joysticksPtr = GetJoysticks(out count);
+        if (joysticksPtr is not null)
+        {
+            joysticks = new SDL_JoystickId[count];
+            for (int i = 0; i < count; i++)
+            {
+                joysticks[i] = joysticksPtr[i];
+            }
+        }
+        return joysticks;
+    }
+
+    /// <summary>
+    /// Get the implementation dependent name of a joystick.
+    /// </summary>
+    /// <remarks>
+    /// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_GetJoystickNameForID">documentation</see> for more details.
+    /// </remarks>
+    /// <param name="instanceId">The joystick instance ID.</param>
+    /// <returns>The name of the selected joystick. If no name can be found, this function returns <see langword="null"/>; call <see cref="GetError"/> for more information.</returns>
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetJoystickNameForID", StringMarshallingCustomType = typeof(SDL_StringMarshaller))]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial string? GetJoystickNameForId(SDL_JoystickId instanceId);
 
