@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace SDL_cs;
+namespace SDL3;
 
 // SDL_event.h located at https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h.
 public static unsafe partial class SDL
@@ -197,7 +197,7 @@ public static unsafe partial class SDL
 	/// <param name="userData">A pointer that is passed to <paramref name="filter"/>.</param>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_SetEventFilter")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial void SetEventFilter(SDL_EventFilterCallback filter, nint userData);
+	public static partial void SetEventFilter(delegate* unmanaged[Cdecl]<nint, SDL_Event*, int>  filter, nint userData);
 
 	/// <summary>
 	/// Query the current event filter.
@@ -211,7 +211,7 @@ public static unsafe partial class SDL
 	[LibraryImport(LibraryName, EntryPoint = "SDL_GetEventFilter")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(NativeBool)]
-	public static partial bool GetEventFilter(out SDL_EventFilterCallback filter, out nint userData);
+	public static partial bool GetEventFilter(out delegate* unmanaged[Cdecl]<nint, SDL_Event*, int> filter, out nint userData);
 
 	/// <summary>
 	/// Add a callback to be triggered when an event is added to the event queue.
@@ -224,7 +224,7 @@ public static unsafe partial class SDL
 	/// <returns>0 on success or a negative error code on failure; call <see cref="GetError"/> for more information.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_AddEventWatch")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial int AddEventWatch(SDL_EventFilterCallback filter, nint userdata);
+	public static partial int AddEventWatch(delegate* unmanaged[Cdecl]<nint, SDL_Event*, int> filter, nint userdata);
 
 	/// <summary>
 	/// Remove an event watch callback added with <see cref="AddEventWatch(SDL_EventFilterCallback, nint)"/>.
@@ -236,16 +236,19 @@ public static unsafe partial class SDL
 	/// <param name="userdata"></param>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_DelEventWatch")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial void DelEventWatch(SDL_EventFilterCallback filter, nint userdata);
+	public static partial void DelEventWatch(delegate* unmanaged[Cdecl]<nint, SDL_Event*, int> filter, nint userdata);
 
 	/// <summary>
 	/// Run a specific filter function on the current event queue, removing any events for which the filter returns 0.
 	/// </summary>
+	/// <remarks>
+	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_FilterEvents">documentation</see> for more details.
+	/// </remarks>
 	/// <param name="filter">The <see cref="SDL_EventFilterCallback"/> function to call when an event happens.</param>
 	/// <param name="userdata">A pointer that is passed to <paramref name="filter"/>.</param>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_FilterEvents")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial void FilterEvents(SDL_EventFilterCallback filter, nint userdata);
+	public static partial void FilterEvents(delegate* unmanaged[Cdecl]<nint, SDL_Event*, int> filter, nint userdata);
 
 	/// <summary>
 	/// Set the state of processing events by type.
@@ -283,4 +286,32 @@ public static unsafe partial class SDL
 	[LibraryImport(LibraryName, EntryPoint = "SDL_RegisterEvents")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial uint RegisterEvents(int numEvents);
+
+	/// <summary>
+	/// Get window associated with an event.
+	/// </summary>
+	/// <remarks>
+	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_GetWindowFromEvent">documentation</see> for more details.
+	/// </remarks>
+	/// <param name="e">An event containing a <c>WindowId</c>.</param>
+	/// <returns>The associated window on success or <see langword="null"/> if there is none.</returns>
+	[LibraryImport(LibraryName, EntryPoint = "SDL_GetWindowFromEvent")]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	public static partial SDL_Window* GetWindowFromEvent(in SDL_Event e);
+
+	/// <summary>
+	/// A value that signifies a button is no longer pressed.
+	/// </summary>
+	/// <remarks>
+	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_RELEASED">documentation</see> for more details.
+	/// </remarks>
+	public const byte Released = 0;
+
+	/// <summary>
+	/// A value that signifies a button has been pressed down.
+	/// </summary>
+	/// <remarks>
+	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_PRESSED">documentation</see> for more details.
+	/// </remarks>
+	public const byte Pressed = 1;
 }

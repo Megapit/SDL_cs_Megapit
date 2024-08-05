@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace SDL_cs;
+namespace SDL3;
 
-// SDL_error.h located at: https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_error.h.
+// SDL_error.h located at https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_error.h.
 public static unsafe partial class SDL
 {
 	/// <summary>

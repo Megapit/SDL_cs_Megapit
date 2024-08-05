@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
 
-namespace SDL_cs;
+namespace SDL3;
 
 // SDL_audio.h located at https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_audio.h.
 // this header is beautiful, even macros have documentation!
@@ -310,7 +309,7 @@ public static unsafe partial class SDL
 	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_BindAudioStreams">documentation</see> for more details.
 	/// </remarks>
 	/// <param name="devId">An audio device to bind a stream to.</param>
-	/// <param name="streams">An array of audio streams to unbind.</param>
+	/// <param name="streams">An array of audio streams to bind.</param>
 	/// <param name="numStreams">Number of streams listed in the <paramref name="streams"/> array. Corresponds to <paramref name="streams"/>.Length.</param>
 	/// <returns>0 on success or a negative error code on failure; call <see cref="GetError"/> for more information.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_BindAudioStreams")]
@@ -687,7 +686,7 @@ public static unsafe partial class SDL
 	/// <returns>0 on success or a negative error code on failure; call <see cref="GetError"/> for more information. This only fails if <paramref name="stream"/> is <see langword="null"/>.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamGetCallback")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial int SetAudioStreamGetCallback(SDL_AudioStream* stream, SDL_AudioStreamCallback callback, nint userData);
+	public static partial int SetAudioStreamGetCallback(SDL_AudioStream* stream, delegate* unmanaged[Cdecl]<nint, SDL_AudioStream*, int, int, void> callback, nint userData);
 
 	/// <summary>
 	/// Set a callback that runs when data is added to an audio stream.
@@ -701,7 +700,7 @@ public static unsafe partial class SDL
 	/// <returns>0 on success or a negative error code on failure; call <see cref="GetError"/> for more information. This only fails if <paramref name="stream"/> is <see langword="null"/>.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamPutCallback")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial int SetAudioStreamPutCallback(SDL_AudioStream* stream, SDL_AudioStreamCallback callback, nint userData);
+	public static partial int SetAudioStreamPutCallback(SDL_AudioStream* stream, delegate* unmanaged[Cdecl]<nint, SDL_AudioStream*, int, int, void> callback, nint userData);
 
 	/// <summary>
 	/// Free an audio stream.
@@ -727,7 +726,7 @@ public static unsafe partial class SDL
 	/// <returns>An audio stream on success, ready to use, or <see langword="null"/> on failure; call <see cref="GetError"/> for more information. When done with this stream, call <see cref="DestroyAudioStream(SDL_AudioStream*)"/> to free resources and close the device.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_OpenAudioDeviceStream")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial SDL_AudioStream* OpenAudioDeviceStream(SDL_AudioDeviceId devId, in SDL_AudioSpec spec, SDL_AudioStreamCallback? callback, nint userData);
+	public static partial SDL_AudioStream* OpenAudioDeviceStream(SDL_AudioDeviceId devId, in SDL_AudioSpec spec, delegate* unmanaged[Cdecl]<nint, SDL_AudioStream*, int, int, void> callback, nint userData);
 
 	/// <summary>
 	/// Convenience function for straightforward audio init for the common case.
@@ -742,7 +741,7 @@ public static unsafe partial class SDL
 	/// <returns>An audio stream on success, ready to use, or <see langword="null"/> on failure; call <see cref="GetError"/> for more information. When done with this stream, call <see cref="DestroyAudioStream(SDL_AudioStream*)"/> to free resources and close the device.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_OpenAudioDeviceStream")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial SDL_AudioStream* OpenAudioDeviceStream(SDL_AudioDeviceId devId, SDL_AudioSpec* spec, SDL_AudioStreamCallback? callback, nint userData);
+	public static partial SDL_AudioStream* OpenAudioDeviceStream(SDL_AudioDeviceId devId, SDL_AudioSpec* spec, delegate* unmanaged[Cdecl]<nint, SDL_AudioStream*, int, int, void> callback, nint userData);
 
 	/// <summary>
 	/// Set a callback that fires when data is about to be fed to an audio device.
@@ -756,7 +755,7 @@ public static unsafe partial class SDL
 	/// <returns>0 on success or a negative error code on failure; call <see cref="GetError"/> for more information.</returns>
 	[LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioPostmixCallback")]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial int SetAudioPostmixCallback(SDL_AudioDeviceId devId, SDL_AudioPostmixCallback callback, nint userData);
+	public static partial int SetAudioPostmixCallback(SDL_AudioDeviceId devId, delegate* unmanaged[Cdecl]<nint, SDL_AudioSpec*, float*, int> callback, nint userData);
 
 	// TODO: implement SDL_LoadWAV_IO
 
