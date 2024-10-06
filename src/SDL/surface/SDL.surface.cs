@@ -6,16 +6,16 @@ namespace SDL3;
 // SDL_surface.h located at https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_surface.h.
 unsafe partial class SDL
 {
-	/// <summary>
-	/// Evaluates to true if the surface needs to be locked before access.
-	/// </summary>
-	/// <remarks>
-	/// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_MUSTLOCK">here</see>
-	/// </remarks>
-	/// <param name="s">The <see cref="SDL_Surface"/> structure to evaluate.</param>
-	/// <returns>True if <paramref name="s"/> needs to be locked, otherwise false.</returns>
-	[Macro]
-	public static bool MustLock(SDL_Surface* s) => (s->Flags & SDL_SurfaceFlags.LockNeeded) == SDL_SurfaceFlags.LockNeeded;
+	///// <summary>
+	///// Evaluates to true if the surface needs to be locked before access.
+	///// </summary>
+	///// <remarks>
+	///// Refer to the official <see href="https://wiki.libsdl.org/SDL3/SDL_MUSTLOCK">here</see>
+	///// </remarks>
+	///// <param name="s">The <see cref="SDL_Surface"/> structure to evaluate.</param>
+	///// <returns>True if <paramref name="s"/> needs to be locked, otherwise false.</returns>
+	//[Macro]
+	//public static bool MustLock(SDL_Surface* s) => (s->Flags & SDL_SurfaceFlags.LockNeeded) == SDL_SurfaceFlags.LockNeeded;
 
 	/// <summary>
 	/// Allocate a new surface with a specific pixel format.
